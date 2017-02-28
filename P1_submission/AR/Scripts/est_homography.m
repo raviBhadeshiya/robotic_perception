@@ -6,6 +6,9 @@ function [ H ] = est_homography(video_pts, logo_pts)
 %     logo_pts: a 4x2 matrix of logo points that correspond to video_pts
 % Outputs:
 %     H: a 3x3 homography matrix such that logo_pts ~ H*video_pts
+% Written for the University of Pennsylvania's Robotics:Perception course
+
+% YOUR CODE HERE
 H = [];
 A=[];
 for i=1:4;

@@ -1,1 +1,0 @@
-T = iread('rvctools\vision\images\wally.png', 'double');
