@@ -1,5 +1,5 @@
 clear all;close all;clc;
-% cd rvctools;startup_rvc;cd ..;
+%% cd rvctools;startup_rvc;cd ..;
 cd ..;cd Data/;
 logo_img = imread('lena.png');
 refImage=rgb2gray(imread('ref_marker.png'));
@@ -11,7 +11,7 @@ imshow(firstFrame)
 hold on
 
 
-% Generate logo points (they are just the outer corners of the image)
+%% Generate logo points (they are just the outer corners of the image)
 [logoy, logox, ~] = size(logo_img);
 logo_pts = [0 0; logox 0; logox logoy; 0 logoy];
 
