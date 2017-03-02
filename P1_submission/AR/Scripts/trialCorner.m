@@ -5,9 +5,9 @@ logo_img = imread('lena.png');
 refImage=rgb2gray(imread('ref_marker.png'));
 video=VideoReader('Tag1.mp4');cd ..;cd Scripts/;
 
-firstFrame=rgb2gray(read(video,150));
+firstFrame=rgb2gray(read(video,100));
 mainImage=firstFrame;
-firstFrame=imgaussfilt(firstFrame,2);
+firstFrame=imgaussfilt(firstFrame);
 firstFrame=imbinarize(firstFrame);
 % figure
 % imshow(firstFrame)
@@ -33,13 +33,13 @@ numPixels = cellfun(@numel,CC.PixelIdxList);
 firstFrame(CC.PixelIdxList{idx}) = 0;
 
 % firstFrame=imdilate(firstFrame,strel('disk',2));
-
-figure
-imshow(firstFrame)
-mask = zeros(size(firstFrame));
-mask(25:end-25,25:end-25) = 1;
-trial=activecontour(~firstFrame,mask);
-figure; imshow(trial)
+% 
+% figure
+% imshow(firstFrame)
+% mask = zeros(size(firstFrame));
+% mask(25:end-25,25:end-25) = 1;
+% trial=activecontour(~firstFrame,mask);
+% figure; imshow(trial)
 
 % gmag=medfilt2(final,[3 3]);
 % figure,imshow(final); hold on 
@@ -56,14 +56,6 @@ P  = houghpeaks(H,4);
 
 lines = houghlines(gmag,T,R,P);%,'FillGap',5,'MinLength',7);
 % lines = houghlines(gmag,T,R,P);%,'FillGap',5,'MinLength',7);
-figure, imshow(mainImage), hold on
-
-for k = 1:length(lines)
-   xy = [lines(k).point1; lines(k).point2];
-   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-
-   % Plot beginnings and ends of lines
-   plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-   plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-
-end
+pts=cornerPoints(lines);
+imshow(mainImage);hold on;
+plot(pts(:,1),pts(:,2),'r*');
