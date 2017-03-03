@@ -1,4 +1,4 @@
-function corner_pts = cornerPoints(lines)
+function corner_pts = cornerPoints(lines,r,c)
 corner_pts=[];
 for i = 1:length(lines)-1
     for j = i+1:length(lines)
@@ -15,7 +15,7 @@ for i = 1:length(lines)-1
         b2 = intercept(xy2,m2);
         xintersect = (b2-b1)/(m1-m2);
         yintersect = m1*xintersect + b1;
-        if (xintersect > 0 && yintersect >0)
+        if (xintersect > 0 && yintersect >0 && xintersect < c && yintersect < r)
             corner =[xintersect,yintersect];
             corner_pts=[corner_pts;corner];
         end
