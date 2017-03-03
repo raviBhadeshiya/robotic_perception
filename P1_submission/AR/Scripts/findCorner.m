@@ -15,19 +15,23 @@ function [corner_pts]=findCorner(image)
 % firstFrame(CC.PixelIdxList{idx}) = 0;
 
 firstFrame=findBlob(image);
-[r c]=size(firstFrame);
+[rows cols]=size(firstFrame);
 
 % corner_pts= corner(firstFrame,4);
 % imshow(gmag);hold on;
 % plot(cor(:,1),cor(:,2),'r*');
-gmag=edge(~firstFrame,'canny');
-gmag=bwmorph(gmag,'thin');
-[H,T,R] = hough(gmag);
 
-P  = houghpeaks(H,4);
+[~,r,c]=harris(firstFrame,2,0.04,'N',4);
 
-lines = houghlines(firstFrame,T,R,P,'Fillgap',250);
-corner_pts=cornerPoints(lines,r,c);
+corner_pts=[c r];
+% gmag=edge(~firstFrame,'canny');
+% gmag=bwmorph(gmag,'thin');
+% [H,T,R] = hough(gmag);
+% 
+% P  = houghpeaks(H,4);
+% 
+% lines = houghlines(firstFrame,T,R,P,'Fillgap',250);
+% corner_pts=cornerPoints(lines,rows,cols);
 % imshow(firstFrame);hold on;
 % for k = 1:length(lines)
 %    xy = [lines(k).point1; lines(k).point2];
