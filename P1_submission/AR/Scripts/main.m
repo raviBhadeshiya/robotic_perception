@@ -3,11 +3,11 @@ clear all;close all;clc;
 cd ..;cd Data/;
 logo_img = imread('lena.png');
 refImage=rgb2gray(imread('ref_marker.png'));
-video=VideoReader('Tag1.mp4');cd ..;cd Scripts/;
+video=VideoReader('Tag2.mp4');cd ..;cd Scripts/;
 warning('off','all');
 %%
-fromNumber=220;
-toNumber=250;
+fromNumber=0;
+toNumber=120;
 frame=cell(toNumber-fromNumber:1);
 corner_pts=cell(toNumber-fromNumber:1);
 k = 0;
