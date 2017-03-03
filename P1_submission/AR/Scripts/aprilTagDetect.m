@@ -18,7 +18,7 @@ for i=1:4
 %             tempId(j,k)=1;
 %         end
 %     end
-    if(probDetect(ID,80))%tempId==refId)
+    if(probDetect(ID,90))%tempId==refId)
         id=8*ID(5,4)+4*ID(5,5)+2*ID(4,5)+ID(4,4);
     else
         pts=circshift(pts,1);

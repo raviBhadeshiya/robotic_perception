@@ -1,4 +1,4 @@
-function [] = play_video( images,corner)
+function [] = play_video( images,corner,id)
 % play_video displays the series of images using imshow as a video
 % Inputs:
 %     images - a Nx1 cell of N images (projected_imgs for this assignment)
@@ -13,6 +13,7 @@ num_ima = length(images);
 for i=1:num_ima
     imshow(images{i});hold on;
     plot(corner{i}(:,1),corner{i}(:,2),'r*');
+    title(['AprilTag is ',num2str(id)])
     pause(1/rate)
 end
 
