@@ -21,7 +21,7 @@ while hasFrame(video) && k < toNumber
         frame{index} = readFrame(video);
         corner_pts{index}=findCorner(frame{index});
         if(length(corner_pts{index})==4)
-            [id(k),corner_pts{index}]=aprilTagDetect(frame{index},corner_pts{index},refImage);
+            [id(index),corner_pts{index}]=aprilTagDetect(frame{index},corner_pts{index},refImage);
             frame{index}=lenaProject(logo_pts,corner_pts{index},logo_img,frame{index});
         end
     end
