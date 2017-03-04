@@ -1,22 +1,19 @@
-% Robotics: Estimation and Learning
-% WEEK 1
-% 
-% This script is to help run your algorithm and visualize the result from it.
-close all
-
-imagepath = './train';
-for k=1:19
-    % Load image
-    I = imread(sprintf('%s/%03d.png',imagepath,k));
-    figure,imshow(I);
-    % Implement your own detectBall function
-    [segI, loc] = detectBall(I);
-    
-    figure, imshow(segI); hold on; 
-    plot(loc(1), loc(2), '+b','MarkerSize',7); 
-    
-    disp('Press any key to continue. (Ctrl+c to exit)')
-    pause
+close all;clear all;clc;
+load Parameter.mat;
+cd ..;
+folder = @(i) fullfile(sprintf('Images/TrainingSet/Frames/%03d.jpg',i));
+to=20;
+image=cell(to,1);
+for k=1:to
+    image{k} = imread(folder(k));
 end
-
-
+cd Scripts;
+for k=1:to
+    figure,imshow(image{k});
+    [segI, loc] = detecteBuoy(image{k},yellow_mu,yellow_sigma,1e-6);
+% % %     figure, imshow(segI); 
+% %     hold on; 
+    plot(loc(1), loc(2), '+r','MarkerSize',10); 
+    disp('Press any key to continue. (Ctrl+c to exit)')
+    pause(1/10);
+end
