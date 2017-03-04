@@ -25,7 +25,7 @@ while hasFrame(video) && k < toNumber
             frame{index}=lenaProject(logo_pts,corner_pts{index},logo_img,frame{index});
             
             figure(1);
-            imshow(frame{index});hold on;
+            imshow(frame{index});hold on;text(corner_pts{index}(1,1),corner_pts{index}(1,2),(['Tag ID is ',num2str(id(1))]));
             title(['AprilTag is ',num2str(id(1))]);
 %             plot(corner_pts{index}(:,1),corner_pts{index}(:,2),'MarkerSize',10);
             cubeProject(frame{index},corner_pts{index});
