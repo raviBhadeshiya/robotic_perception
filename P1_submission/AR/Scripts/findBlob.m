@@ -1,6 +1,7 @@
 function blob=findBlob(image)
 
-firstFrame=imgaussfilt(rgb2gray(image));
+% firstFrame=imgaussfilt(rgb2gray(image));
+firstFrame=rgb2gray(image);
 [r c]=size(firstFrame);
 firstFrame=imbinarize(firstFrame);
 

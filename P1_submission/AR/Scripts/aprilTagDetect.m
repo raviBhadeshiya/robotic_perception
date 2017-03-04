@@ -12,12 +12,7 @@ for i=1:4
 %     figure(1);
 %     imshow(warpedTag);
     ID=imbinarize(rgb2gray(imresize(warpedTag,[8,8])));
-%     tempId=ID;
-%     for j=4:5
-%         for k=4:5
-%             tempId(j,k)=1;
-%         end
-%     end
+
     if(probDetect(ID,90))%tempId==refId)
         id=8*ID(5,4)+4*ID(5,5)+2*ID(4,5)+ID(4,4);
     else
