@@ -9,11 +9,11 @@ for k=1:to
 end
 cd Scripts;
 for k=1:to
-    figure,imshow(image{k});
-    [segI, loc] = detecteBuoy(image{k},yellow_mu,yellow_sigma,1e-6);
-% % %     figure, imshow(segI); 
-% %     hold on; 
+    figure(1),imshow(image{k});
+    [segI,loc] = detecteBuoy(imgaussfilt(image{k},5),green_mu,green_sigma,1.55e-5);
+%     figure, imshow(segI); 
+    hold on; 
     plot(loc(1), loc(2), '+r','MarkerSize',10); 
-    disp('Press any key to continue. (Ctrl+c to exit)')
+%     disp('Press any key to continue. (Ctrl+c to exit)')
     pause(1/10);
 end
