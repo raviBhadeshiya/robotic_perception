@@ -23,7 +23,7 @@ detected=plot(tagCorner(1,1),tagCorner(1,2),'r:s');detected=plot(tagCorner(2,1),
 detected=plot(tagCorner(3,1),tagCorner(3,2),'b:s');detected=plot(tagCorner(4,1),tagCorner(4,2),'y:s');
 title(['Tag ID is ',num2str(ID)]);
 text(tagCorner(1,1),tagCorner(1,2),(['Tag ID is ',num2str(ID)]));
-cd ..; cd Output/; cd (tag{1});
+cd ..; cd Output/; mkdir (tag{1});
 saveas(detected,'detected.jpg');
 cd ..; cd ..; cd Scripts/;
 
@@ -32,13 +32,12 @@ frame=cell(toNumber-fromNumber:1);
 corner_pts=cell(toNumber-fromNumber:1);
 id=zeros(toNumber-fromNumber:1);
 cd ..; cd Output/; cd (tag{1});
-vidWriterHomo=VideoWriter('homography.mp4','MPEG-4');
-vidWriterVirtual=VideoWriter('virtual.mp4','MPEG-4');
+vidWriter=VideoWriter('homography.mp4','MPEG-4');
 cd ..; cd ..; cd Scripts/;
 k = 0;
 [logoy, logox, ~] = size(logo_img);
 logo_pts = [0 0; logox 0; logox logoy; 0 logoy];
-open(vidWriterHomo); open(vidWriterVirtual);
+open(vidWriter);
 for index=fromNumber:toNumber
     
     frame{index} = (read(video,index));
@@ -46,26 +45,21 @@ for index=fromNumber:toNumber
     corner_pts{index}=findCorner(frame{index});
     if(length(corner_pts{index})==4)
         [~,corner_pts{index}]=aprilTagDetect(frame{index},corner_pts{index},refImage);
+        frame{index}=lenaProject(logo_pts,corner_pts{index},logo_img,frame{index});
         figure(1);
-        lenaFrame{index}=lenaProject(logo_pts,corner_pts{index},logo_img,frame{index});
-        
-        imshow(lenaFrame{index});hold on;text(corner_pts{index}(1,1),corner_pts{index}(1,2),...
+        imshow(frame{index});hold on;text(corner_pts{index}(1,1),corner_pts{index}(1,2),...
             (['Tag ID is ',num2str(ID)]),'Color', 'red');
-        homoFrame=getframe;
-        figure(2);imshow(frame{index}); hold on;
+        
         plot(corner_pts{index}(:,1),corner_pts{index}(:,2),'MarkerSize',10);
         cubeProject(frame{index},corner_pts{index});
         title(['Tag ID is ',num2str(ID)]);
-        virtualFrame=getframe;
-        cd ..; cd Output/; cd (tag{1});
-        writeVideo(vidWriterHomo,homoFrame);
-        writeVideo(vidWriterVirtual,virtualFrame);
+        cd ..; cd Output/; cd (tag{1}); writeVideo(vidWriter,getframe);
         cd ..; cd ..; cd Scripts/;
         
     end
 end
 
-close(vidWriterHomo); close(vidWriterVirtual);
+close(vidWriter);
 
 % cd ..; cd Output/;
 % open(vidWriter);
