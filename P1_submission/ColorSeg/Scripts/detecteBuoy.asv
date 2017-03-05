@@ -6,7 +6,7 @@
 % thre = 1e-6;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Find ball-color pixels using your model
-I=rgb2lab(I);
+% I=rgb2lab(I);
 mask=zeros(size(I,1),size(I,2));
 hue=I(:,:,1);
 saturation=I(:,:,2);
@@ -23,7 +23,7 @@ for i=1:size(I,1)
 
 %  mask=prob>= 6*std(prob(:)'); #for green buoy works fine 
  mask=prob>= 2.5*std(prob(:)');
- mask=bwareaopen(mask,90);
+%  mask=bwareaopen(mask,90);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %   bwconncomp
 %   regionprops

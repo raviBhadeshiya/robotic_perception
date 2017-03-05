@@ -2,7 +2,7 @@ close all;clear all;clc;
 load Parameter.mat;
 cd ..;
 folder = @(i) fullfile(sprintf('Images/TrainingSet/Frames/%03d.jpg',i));
-to=2;
+to=20;
 image=cell(to,1);
 for k=1:to
     image{k} = imread(folder(k));
@@ -15,8 +15,8 @@ for k=1:to
     figure, imshow(segI); 
     hold on; 
     plot(loc(1), loc(2), '+r','MarkerSize',10); 
-    contour = bwboundaries(segI,'noholes');
-    plot(contour{1}(:,2),contour{1}(:,1),'g','LineWidth',2);
+    contour = bwtraceboundary(segI,[r c],'W',8,Inf,'counterclockwise');
+    plot(contour(:,2),contour(:,1),'g','LineWidth',2);
 %     disp('Press any key to continue. (Ctrl+c to exit)')
     pause(1/10);
 end
