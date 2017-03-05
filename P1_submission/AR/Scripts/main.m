@@ -35,7 +35,6 @@ cd ..; cd Output/; cd (tag{1});
 vidWriterHomo=VideoWriter('homography.mp4','MPEG-4');
 vidWriterVirtual=VideoWriter('virtual.mp4','MPEG-4');
 cd ..; cd ..; cd Scripts/;
-k = 0;
 [logoy, logox, ~] = size(logo_img);
 logo_pts = [0 0; logox 0; logox logoy; 0 logoy];
 open(vidWriterHomo); open(vidWriterVirtual);
@@ -47,36 +46,24 @@ for index=fromNumber:toNumber
     if(length(corner_pts{index})==4)
         [~,corner_pts{index}]=aprilTagDetect(frame{index},corner_pts{index},refImage);
         figure(1);
-        lenaFrame{index}=lenaProject(logo_pts,corner_pts{index},logo_img,frame{index});
+        lenaFrame=lenaProject(logo_pts,corner_pts{index},logo_img,frame{index});
         
-        imshow(lenaFrame{index});hold on;text(corner_pts{index}(1,1),corner_pts{index}(1,2),...
+        imshow(lenaFrame);hold on;text(corner_pts{index}(1,1),corner_pts{index}(1,2),...
             (['Tag ID is ',num2str(ID)]),'Color', 'red');
         homoFrame=getframe;
         figure(2);imshow(frame{index}); hold on;
-        plot(corner_pts{index}(:,1),corner_pts{index}(:,2),'MarkerSize',10);
+        text(corner_pts{index}(1,1),corner_pts{index}(1,2),...
+            (['Tag ID is ',num2str(ID)]),'Color', 'red');
         cubeProject(frame{index},corner_pts{index});
         title(['Tag ID is ',num2str(ID)]);
         virtualFrame=getframe;
-        cd ..; cd Output/; cd (tag{1});
         writeVideo(vidWriterHomo,homoFrame);
         writeVideo(vidWriterVirtual,virtualFrame);
-        cd ..; cd ..; cd Scripts/;
         
     end
 end
 
 close(vidWriterHomo); close(vidWriterVirtual);
 
-% cd ..; cd Output/;
-% open(vidWriter);
-% folder=@(t,i) fullfile (sprintf('Tag%d/Image%d.jpg',t,i));
-% tagRead=@(img,i) imread(img,i);
-% for index=fromNumber:toNumber
-% dir=folder((t-1),i);
-% reafImage=tagRead(frame,dir);
-% writeVideo(vidWriter,readImage);
-% end
-% close(vidWriter);
-% cd ..; cd ..; cd Scripts/;
-% close all;
+close all;
 % play_video(frame,corner_pts,id(1));
