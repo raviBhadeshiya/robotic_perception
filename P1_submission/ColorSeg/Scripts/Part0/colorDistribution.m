@@ -10,6 +10,7 @@ SamplesG = [];
 for k=1:20
     % Load image
     I = imread(sprintf('%s/%03d.jpg',train,k));
+    I=imgaussfilt(I,2);
     % You may consider other color space than RGB
     R = I(:,:,1);
     G = I(:,:,2);
@@ -46,7 +47,6 @@ xlabel('Red');
 ylabel('Green');
 zlabel('Blue');
 saveas(gcf,folder('R'));
-
 figure,
 scatter3(SamplesY(:,1),SamplesY(:,2),SamplesY(:,3),'.');
 title('Pixel Color Distribubtion');
@@ -62,11 +62,11 @@ ylabel('Green');
 zlabel('Blue');
 saveas(gcf,folder('G'));
 close all;
+cd scripts/Part0/
+save('ColorSamples.mat','SamplesR','SamplesY','SamplesG');
 %%
 %Estimate the mu and sigma
-cd scripts/
-[red_mu,red_sigma]=estimatPerameters(SamplesR);
-[yellow_mu,yellow_sigma]=estimatPerameters(SamplesY);
-[green_mu,green_sigma]=estimatPerameters(SamplesG);
-save('Parameter.mat','red_mu','yellow_mu','green_mu','red_sigma','yellow_sigma','green_sigma');
-
+% [red_mu,red_sigma]=estimatPerameters(SamplesR);
+% [yellow_mu,yellow_sigma]=estimatPerameters(SamplesY);
+% [green_mu,green_sigma]=estimatPerameters(SamplesG);
+% save('Parameter.mat','red_mu','yellow_mu','green_mu','red_sigma','yellow_sigma','green_sigma');

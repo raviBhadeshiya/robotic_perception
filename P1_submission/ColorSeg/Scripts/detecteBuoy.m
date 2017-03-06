@@ -29,11 +29,17 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compute the location of the ball center
 mask_biggest = false(size(mask));
-% mask_biggest=imclose(mask_biggest,strel('disk',15));
+% mask_biggest=imclose(mask_biggest,strel('disk',350));
 CC = bwconncomp(mask);
 numPixels = cellfun(@numel,CC.PixelIdxList);
-[biggest,idx] = min(numPixels);
+[biggest,idx] = max(numPixels);
 mask_biggest(CC.PixelIdxList{idx}) = true;
+
+% CC = bwconncomp(mask);
+% numPixels = cellfun(@numel,CC.PixelIdxList);
+% [biggest,idx] = max(numPixels);
+% mask_biggest(CC.PixelIdxList{idx}) = true;
+
 S = regionprops(CC,'Centroid');
 loc = S(idx).Centroid;
 segI = imfill(mask_biggest,(round(loc)));
