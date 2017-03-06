@@ -10,7 +10,11 @@ SamplesG = [];
 for k=1:20
     % Load image
     I = imread(sprintf('%s/%03d.jpg',train,k));
+<<<<<<< HEAD
     I=imgaussfilt(I,2);
+=======
+    I=rgb2lab(I);
+>>>>>>> refs/remotes/origin/newthing
     % You may consider other color space than RGB
     R = I(:,:,1);
     G = I(:,:,2);
