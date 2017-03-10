@@ -1,8 +1,8 @@
-close all;clear all;clc;cd ..;
+close all;clear all;clc;cd ..;cd ..;
 train = 'Images/TrainingSet/Frames/';
 coroped='Images/TrainingSet/CroppedBuoys/';
-mkdir('Output/Part0/');
-folder = @(i) fullfile(sprintf('Output/Part0/%s_hist.jpg',i));
+mkdir('Output/Part2/');
+folder = @(i) fullfile(sprintf('Output/Part2/%s_hist.jpg',i));
 %%
 SamplesR = [];
 SamplesY = [];
@@ -13,9 +13,9 @@ for k=1:20
     I=imgaussfilt(I,2);
 %     I=rgb2lab(I);
     % You may consider other color space than RGB
-    R = I(:,:,1);
-    G = I(:,:,2);
-    B = I(:,:,3);
+    R = double(I(:,:,1));
+    G = double(I(:,:,2));
+    B = double(I(:,:,3));
     % Collect Cropped samples
     %Red buoy
     maskR = imread(sprintf('%s/R_%03d.jpg',coroped,k));
@@ -65,9 +65,8 @@ end
 % close all;
 
 %%
-cd scripts/
-[mu_r,sigma_r]=estimatPerameters(SamplesR);
-[mu_y,sigma_y]=estimatPerameters(SamplesY);
-[mu_g,sigma_g]=estimatPerameters(SamplesG);
-
-save('ColorSamples.mat','mu_r','sigma_r','mu_y','sigma_y','mu_g','sigma_g');
+cd scripts/Part2/
+GMM_red=estimatPerameters(SamplesR,5);
+GMM_yellow=estimatPerameters(SamplesY,5);
+GMM_green=estimatPerameters(SamplesG,5);
+save('ColorSamples.mat','GMM_red','GMM_yellow','GMM_green');

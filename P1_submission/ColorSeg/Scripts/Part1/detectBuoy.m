@@ -1,7 +1,7 @@
-function [segI, loc] = detectBuoy3d(FrameID,param)
+function [segI, loc] = detectBuoy(FrameID,param)
 %%
 folder = @(i) fullfile(sprintf('Images/TestSet/Frames/%03d.jpg',i));
-cd ..;
+cd ..;cd ..;
 I1=imread(folder(FrameID));
 
 Ir=imgaussfilt(I1,15);
@@ -10,7 +10,7 @@ Iy=imgaussfilt(I1,6);
 % % Ir=imgaussfilt(I1,1);
 % % Ig=imgaussfilt(I1,1);
 % % Iy=imgaussfilt(I1,1);
-cd Scripts/;
+cd Scripts/Part1/;
 %%
 load ColorSamples.mat
 %%

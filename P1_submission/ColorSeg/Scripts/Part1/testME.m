@@ -6,7 +6,7 @@ colorDistribution
 
 for i=1:180
     title(i);
-    detectBuoy3d(i,1);
+    detectBuoy(i,1);
     pause(1/60);
 end
 %red =30
