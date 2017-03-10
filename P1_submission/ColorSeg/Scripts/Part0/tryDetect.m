@@ -7,7 +7,7 @@ I1=imread(folder(FrameID));
 %     I(:,:,i)=imadjust(I(:,:,i),[0. 0.8]);
 % end
 % I = imgaussfilt(I,8);
-I=imgaussfilt(imadjust(I1,[0.5 0.9],[]),5);
+I=imgaussfilt(imadjust(I1,[0.5 0.9],[]),6);
 cd Scripts/Part0;
 %%
 thre = 1e-6;
@@ -37,29 +37,27 @@ for i=1:size(I,1)
         probY(i,j)=exp(-0.5*(double(y)-mu_y)*(double(y)-mu_y)/sigma_y)/(((2*pi)^1/2)*sqrt(sigma_y));
     end
 end
-maskR = probR >2*std(probR(:)');
+
+figure(1);
+imshow(I1); hold on;
+
+maskR = probR >3*std2(probR);
 maskR2=zeros(size(maskR));
 maskR=bwareafilt(maskR,[200,2000]);
 propsR=regionprops(maskR);
 maskR=imfill(maskR,'holes');
 ccR = bwconncomp(maskR);
+if ccR.NumObjects>0
 numPixelsR = cellfun(@numel,ccR.PixelIdxList);
 [biggestR,idxR] = max(numPixelsR);
 maskR2(ccR.PixelIdxList{idxR}) = 1;
 [bwR,~] = bwboundaries(maskR2,'holes');
-% imshow(maskR);hold on;
-% plot(bwR{1}(:,2),bwR{1}(:,1),'r', 'LineWidth', 2);
-% [~,sortedR]=sort(propsR.Area);
-% centroidR=propsR.Centroid;
-% for i=1:size(propsR,1)
-%     centroidR=propsR(1).Centroid;
-%     maskR=imfill(maskR,[round(centroidR(1,1)) round(centroidR(1,2))]);
-% end
+plot(bwR{1}(:,2),bwR{1}(:,1),'r', 'LineWidth', 2);
+end
 
-maskY = probY >  2*std(probY(:)');
-% maskY=bwareafilt(maskY,[500,5000]);
+maskY = probY >  2*std2(probY);
 maskY2=zeros(size(maskY));
-maskY=bwareafilt(maskY,[200,2000]);
+maskY=bwareafilt(maskY,[100,4500]);
 propsY=regionprops(maskY);
 maskY=imfill(maskY,'holes');
 ccY = bwconncomp(maskY);
@@ -67,14 +65,10 @@ numPixelsY = cellfun(@numel,ccY.PixelIdxList);
 [biggestY,idxY] = max(numPixelsY);
 maskY2(ccY.PixelIdxList{idxY}) = 1;
 [bwY,~] = bwboundaries(maskY2,'holes');
-% figure;
-% imshow(maskY);hold on;
-% plot(bwY{1}(:,2),bwY{1}(:,1),'y', 'LineWidth', 2);
+plot(bwY{1}(:,2),bwY{1}(:,1),'y', 'LineWidth', 2);
 
-
-maskG = probG > 2*std(probG(:)');
-maskG=bwareafilt(maskG,[150,350]);
-% maskG=imdilate(maskG,strel('disk', 10));
+maskG = probG > 2*std2(probG);
+maskG=bwareafilt(maskG,[150,300]);
 maskG2=zeros(size(maskG));
 propsG=regionprops(maskG);
 maskG=imfill(maskG,'holes');
@@ -83,46 +77,8 @@ if FrameID<23
     numPixelsG = cellfun(@numel,ccG.PixelIdxList);
     [biggestG,idxG] = max(numPixelsG);
     maskG2(ccG.PixelIdxList{idxG}) = 1;
-    [bwG,~] = bwboundaries(maskG,'holes');
-else
-    disp('green objects not found')
-end
-% plot(bwG{1}(:,2),bwG{1}(:,1),'g', 'LineWidth', 2);
-
-
-figure(1);
-imshow(I1); hold on;
-plot(bwY{1}(:,2),bwY{1}(:,1),'y', 'LineWidth', 2);
-plot(bwR{1}(:,2),bwR{1}(:,1),'r', 'LineWidth', 2);
-if FrameID<23
+    [bwG,~] = bwboundaries(maskG2,'holes');
     plot(bwG{1}(:,2),bwG{1}(:,1),'g', 'LineWidth', 2);
 end
-% subplot(1,3,1)
-% imshow(maskY);hold on;plot(bwY{1}(:,2),bwY{1}(:,1),'y', 'LineWidth', 2);
-% subplot(1,3,2)
-% imshow(maskR);plot(bwR{1}(:,2),bwR{1}(:,1),'r', 'LineWidth', 2);
-% subplot(1,3,3)
-% imshow(maskG);plot(bwG{1}(:,2),bwG{1}(:,1),'g', 'LineWidth', 2);
-% figure(2);
-% imshow(prob/mean2(prob));colormap winter;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%   bwconncomp
-%   regionprops
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Compute the location of the ball center
-% mask_biggest = false(size(mask));
-% % mask_biggest=imclose(mask_biggest,strel('disk',350));
-% CC = bwconncomp(mask);
-% numPixels = cellfun(@numel,CC.PixelIdxList);
-% [biggest,idx] = max(numPixels);
-% mask_biggest(CC.PixelIdxList{idx}) = true;
-%
-% % CC = bwconncomp(mask);
-% % numPixels = cellfun(@numel,CC.PixelIdxList);
-% % [biggest,idx] = max(numPixels);
-% % mask_biggest(CC.PixelIdxList{idx}) = true;
-%
-% S = regionprops(CC,'Centroid');
-% loc = S(idx).Centroid;
-% segI = imfill(mask_biggest,(round(loc)));
+
 end

@@ -3,6 +3,7 @@ close all;
 clc;
 % tic
 colorDistribution
+
 for i=1:180
     title(i);
     detectBuoy3d(i,1);

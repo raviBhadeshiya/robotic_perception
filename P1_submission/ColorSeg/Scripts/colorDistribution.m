@@ -63,11 +63,11 @@ end
 % zlabel('Blue');
 % saveas(gcf,folder('G'));
 % close all;
-cd scripts/
-save('ColorSamples.mat','SamplesR','SamplesY','SamplesG');
+
 %%
-%Estimate the mu and sigma
-% [red_mu,red_sigma]=estimatPerameters(SamplesR);
-% [yellow_mu,yellow_sigma]=estimatPerameters(SamplesY);
-% [green_mu,green_sigma]=estimatPerameters(SamplesG);
-% save('Parameter.mat','red_mu','yellow_mu','green_mu','red_sigma','yellow_sigma','green_sigma');
+cd scripts/
+[mu_r,sigma_r]=estimatPerameters(SamplesR);
+[mu_y,sigma_y]=estimatPerameters(SamplesY);
+[mu_g,sigma_g]=estimatPerameters(SamplesG);
+
+save('ColorSamples.mat','mu_r','sigma_r','mu_y','sigma_y','mu_g','sigma_g');
