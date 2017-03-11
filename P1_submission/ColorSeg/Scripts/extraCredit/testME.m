@@ -1,10 +1,11 @@
 clear all;
 close all;
 clc;
+% tic
 colorDistribution
-cd ..; cd ..; cd Output\Part2\;
-vidWriter=VideoWriter('GaussianMM.mp4','MPEG-4');
-cd ..;cd ..;cd Scripts\Part2\;
+cd ..; cd ..; cd Output\extraCredit\;
+vidWriter=VideoWriter('hsv.mp4','MPEG-4');
+cd ..;cd ..;cd Scripts\extraCredit\;
 open(vidWriter);
 for i=1:180
     title(i);
@@ -13,5 +14,6 @@ for i=1:180
     pause(1/60);
 end
 close(vidWriter)
+
 close all;
 clear all;
