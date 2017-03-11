@@ -66,7 +66,7 @@ end
 
 %%
 cd scripts/Part2/
-GMM_red=estimatPerameters(SamplesR,2);
-GMM_yellow=estimatPerameters(SamplesY,2);
-GMM_green=estimatPerameters(SamplesG,2);
+GMM_red=estimatPerameters(SamplesR,3);
+GMM_yellow=estimatPerameters(SamplesY,3);
+GMM_green=estimatPerameters(SamplesG,3);
 save('ColorSamples.mat','GMM_red','GMM_yellow','GMM_green');

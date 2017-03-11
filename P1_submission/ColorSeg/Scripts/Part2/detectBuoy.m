@@ -1,4 +1,4 @@
-function [segI, loc] = detectBuoy(FrameID,param)
+function frameReturn = detectBuoy(FrameID,param)
 %%
 folder = @(i) fullfile(sprintf('Images/TestSet/Frames/%03d.jpg',i));
 cd ..;cd ..;
@@ -27,14 +27,15 @@ for i=1:size(I1,1)
         x=[redr(i,j) greenr(i,j) bluer(i,j)]';
         y=[redg(i,j) greeng(i,j) blueg(i,j)]';
         z=[redy(i,j) greeny(i,j) bluey(i,j)]';
-%         %         prob(i,j)=exp(-0.5*(double(x)-mu_g)'*inv(sigma_g)*(double(x)-mu_g))/(((2*pi)^3/2)*sqrt(det(sigma_)));
-%         probr(i,j)=exp(-0.5*((double(x)-mu_r)'/sigma_r)*(double(x)-mu_r))/(((2*pi)^3/2)*sqrt(det(sigma_r)));
-%         probg(i,j)=exp(-0.5*((double(y)-mu_g)'/sigma_g)*(double(y)-mu_g))/(((2*pi)^3/2)*sqrt(det(sigma_g)));
-%         proby(i,j)=exp(-0.5*((double(z)-mu_y)'/sigma_y)*(double(z)-mu_y))/(((2*pi)^3/2)*sqrt(det(sigma_y)));
-        probr(i,j)=findProbability(x,GMM_red);
-        probg(i,j)=findProbability(y,GMM_green);
-        proby(i,j)=findProbability(z,GMM_yellow);
+        %         probr(i,j)=exp(-0.5*((double(x)-mu_r)'/sigma_r)*(double(x)-mu_r))/(((2*pi)^3/2)*sqrt(det(sigma_r)));
+        %         probg(i,j)=exp(-0.5*((double(y)-mu_g)'/sigma_g)*(double(y)-mu_g))/(((2*pi)^3/2)*sqrt(det(sigma_g)));
+        %         proby(i,j)=exp(-0.5*((double(z)-mu_y)'/sigma_y)*(double(z)-mu_y))/(((2*pi)^3/2)*sqrt(det(sigma_y)));
+        %         probr(i,j)=findProbability(x,GMM_red);
+        %         probg(i,j)=findProbability(y,GMM_green);
+        %         proby(i,j)=findProbability(z,GMM_yellow);
+        [probr(i,j), probg(i,j),proby(i,j)]=findProbability(x,y,z,GMM_red,GMM_green,GMM_yellow);
     end
+    i
 end
 maskR = probr >2*std2(probr); %fine tuning needed
 maskY = proby > 6*std2(proby); %final value
@@ -50,11 +51,11 @@ maskR=bwareafilt(maskR,[200,5500]);
 propsR=regionprops(maskR);
 ccR = bwconncomp(maskR);
 if ccR.NumObjects>0
-numPixelsR = cellfun(@numel,ccR.PixelIdxList);
-[biggestR,idxR] = max(numPixelsR);
-maskR2(ccR.PixelIdxList{idxR}) = 1;
-[bwR,~] = bwboundaries(maskR2,'holes');
-plot(bwR{1}(:,2),bwR{1}(:,1),'r', 'LineWidth', 2);
+    numPixelsR = cellfun(@numel,ccR.PixelIdxList);
+    [biggestR,idxR] = max(numPixelsR);
+    maskR2(ccR.PixelIdxList{idxR}) = 1;
+    [bwR,~] = bwboundaries(maskR2,'holes');
+    plot(bwR{1}(:,2),bwR{1}(:,1),'r', 'LineWidth', 2);
 end
 
 maskY2=zeros(size(maskY));
@@ -73,13 +74,14 @@ maskG2=zeros(size(maskG));
 propsG=regionprops(maskG);
 ccG = bwconncomp(maskG);
 
-    numPixelsG = cellfun(@numel,ccG.PixelIdxList);
-    [biggestG,idxG] = max(numPixelsG);
-    maskG2(ccG.PixelIdxList{idxG}) = 1;
-    maskG2=imdilate(maskG2,strel('disk',10));
-    [bwG,~] = bwboundaries(maskG2,'holes');
-        
-%     if FrameID<23
-        plot(bwG{1}(:,2),bwG{1}(:,1),'g', 'LineWidth', 2);
-%     end
+numPixelsG = cellfun(@numel,ccG.PixelIdxList);
+[biggestG,idxG] = max(numPixelsG);
+maskG2(ccG.PixelIdxList{idxG}) = 1;
+maskG2=imdilate(maskG2,strel('disk',10));
+[bwG,~] = bwboundaries(maskG2,'holes');
+
+if FrameID<23
+    plot(bwG{1}(:,2),bwG{1}(:,1),'g', 'LineWidth', 2);
+end
+frameReturn=getframe;
 end
