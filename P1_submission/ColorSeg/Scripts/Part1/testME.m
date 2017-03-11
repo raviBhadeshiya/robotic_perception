@@ -3,21 +3,17 @@ close all;
 clc;
 % tic
 colorDistribution
-
+cd ..; cd ..; cd Output\Part1\;
+vidWriter=VideoWriter('3dGaussian.mp4','MPEG-4');
+cd ..;cd ..;cd Scripts\Part1\;
+open(vidWriter);
 for i=1:180
     title(i);
-    detectBuoy(i,1);
+    virtualFrame=detectBuoy(i,1);
+    writeVideo(vidWriter,virtualFrame);
     pause(1/60);
 end
-%red =30
-% AIC = zeros(1,30);
-% GMModels = cell(1,20);
-% options = statset('MaxIter',500);
-% parfor k = 1:30
-%     GMModels{k} = fitgmdist(SamplesY,k,'Options',options,'CovarianceType','diagonal');
-%     AIC(k)= GMModels{k}.AIC;
-% end
-% [minAIC,numComponents] = min(AIC);
-% numComponents
-% BestModel = GMModels{numComponents};
-% toc
+close(vidWriter)
+
+close all;
+clear all;

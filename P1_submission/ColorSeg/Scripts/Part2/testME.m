@@ -1,7 +1,7 @@
 clear all;
 close all;
 clc;
-% colorDistribution
+colorDistribution
 for i=1:180
     title(i);
     detectBuoy(i,1);

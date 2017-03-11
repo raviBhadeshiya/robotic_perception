@@ -21,6 +21,7 @@ masky=zeros(size(Iy,1),size(Iy,2));proby=masky;
 redr=Ir(:,:,1);greenr=Ir(:,:,2);bluer=Ir(:,:,3);
 redg=Ig(:,:,1);greeng=Ig(:,:,2);blueg=Ig(:,:,3);
 redy=Iy(:,:,1);greeny=Iy(:,:,2);bluey=Iy(:,:,3);
+
 for i=1:size(I1,1)
     for j=1:size(I1,2)
         x=[redr(i,j) greenr(i,j) bluer(i,j)]';
@@ -33,7 +34,6 @@ for i=1:size(I1,1)
         probr(i,j)=findProbability(x,GMM_red);
         probg(i,j)=findProbability(y,GMM_green);
         proby(i,j)=findProbability(z,GMM_yellow);
-        
     end
 end
 maskR = probr >2*std2(probr); %fine tuning needed

@@ -1,4 +1,4 @@
-function [segI, loc] = detectBuoy(FrameID,param)
+function returnFrame = detectBuoy(FrameID,param)
 %%
 folder = @(i) fullfile(sprintf('Images/TestSet/Frames/%03d.jpg',i));
 cd ..;cd ..;
@@ -79,7 +79,9 @@ ccG = bwconncomp(maskG);
     maskG2=imdilate(maskG2,strel('disk',10));
     [bwG,~] = bwboundaries(maskG2,'holes');
         
-%     if FrameID<23
+    if FrameID<23
         plot(bwG{1}(:,2),bwG{1}(:,1),'g', 'LineWidth', 2);
-%     end
+    end
+
+returnFrame=getframe;
 end
