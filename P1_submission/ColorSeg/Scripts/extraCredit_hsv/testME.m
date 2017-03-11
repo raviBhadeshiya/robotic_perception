@@ -3,9 +3,9 @@ close all;
 clc;
 % tic
 colorDistribution
-cd ..; cd ..; cd Output\extraCredit\;
+cd ..; cd ..; cd Output\extraCredit_hsv\;
 vidWriter=VideoWriter('hsv.mp4','MPEG-4');
-cd ..;cd ..;cd Scripts\extraCredit\;
+cd ..;cd ..;cd Scripts\extraCredit_hsv\;
 open(vidWriter);
 for i=1:180
     title(i);

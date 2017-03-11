@@ -1,8 +1,8 @@
 close all;clear all;clc;cd ..;cd ..;
 train = 'Images/TrainingSet/Frames/';
 coroped='Images/TrainingSet/CroppedBuoys/';
-mkdir('Output/extraCredit/');
-folder = @(i) fullfile(sprintf('Output/extraCredit/%s_hist.jpg',i));
+mkdir('Output/extraCredit_hsv/');
+folder = @(i) fullfile(sprintf('Output/extraCredit_hsv/%s_hist.jpg',i));
 %%
 SamplesR = [];
 SamplesY = [];
@@ -65,7 +65,7 @@ saveas(gcf,folder('G'));
 close all;
 
 %%
-cd scripts/extraCredit/
+cd scripts/extraCredit_hsv/
 [mu_r,sigma_r]=estimatPerameters(SamplesR);
 [mu_y,sigma_y]=estimatPerameters(SamplesY);
 [mu_g,sigma_g]=estimatPerameters(SamplesG);

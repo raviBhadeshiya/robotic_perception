@@ -4,13 +4,10 @@ folder = @(i) fullfile(sprintf('Images/TestSet/Frames/%03d.jpg',i));
 cd ..;cd ..;
 I1=rgb2hsv(imread(folder(FrameID)));
 
-Ir=imgaussfilt(I1,15);
-Ig=imgaussfilt(I1,1);
+Ir=imgaussfilt(I1,4);
+Ig=imgaussfilt(I1,4);
 Iy=imgaussfilt(I1,6);
-% % Ir=imgaussfilt(I1,1);
-% % Ig=imgaussfilt(I1,1);
-% % Iy=imgaussfilt(I1,1);
-cd Scripts/Part1/;
+cd Scripts/extraCredit_hsv/;
 %%
 load ColorSamples.mat
 %%
@@ -31,17 +28,15 @@ for i=1:size(I1,1)
         probg(i,j)=exp(-0.5*((double(y)-mu_g)'/sigma_g)*(double(y)-mu_g))/(((2*pi)^3/2)*sqrt(det(sigma_g)));
         proby(i,j)=exp(-0.5*((double(z)-mu_y)'/sigma_y)*(double(z)-mu_y))/(((2*pi)^3/2)*sqrt(det(sigma_y)));
 %         
-%         probr(i,j)=mvnpdf(double(x),mu_r,sigma_r);
-%         probg(i,j)=mvnpdf(double(y),mu_g,sigma_y);
-%         proby(i,j)=mvnpdf(double(z),mu_y,sigma_y);
     end
 end
-maskR = probr >2*std2(probr); %fine tuning needed
+maskR = probr > 2*std2(probr); %final value
 maskY = proby > 6*std2(proby); %final value
 maskG = probg > 9*std2(probg); %final value
 
 figure(1);
-imshow(I1); hold on;
+imshow(hsv2rgb(I1)); hold on;
+
 
 
 maskR2=zeros(size(maskR));
