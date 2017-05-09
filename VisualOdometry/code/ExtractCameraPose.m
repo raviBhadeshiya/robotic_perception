@@ -1,3 +1,4 @@
+
 function [Cset Rset] = ExtractCameraPose(E)
 
 W = [0 -1 0;1 0 0;0 0 1];
@@ -37,3 +38,4 @@ if det(R) < 0
 end
 Rset{4} = R;
 Cset{4} = -R'*C;
+end

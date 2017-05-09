@@ -24,10 +24,6 @@ for i=1:size(x1,1)
     x=v(:,end)/v(end,end);
     X=[X;x(1:3,:)'];
 end
-% function skew = vec2skew(v)
-% skew=[0 -v(3) v(2);v(3) 0 -v(1);-v(2) v(1) 0];
-% end
-
 end
 
 
