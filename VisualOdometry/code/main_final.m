@@ -1,9 +1,16 @@
 
-images = imageDatastore(fullfile(toolboxdir('vision'), 'visiondata', ...
-    'NewTsukuba'));
+cd ..;
+imgFolder = fullfile('input\Oxford_dataset\stereo\centre\');
+images = imageDatastore(imgFolder,'IncludeSubfolders',true);
+model=fullfile('..\input\Oxford_dataset\model');
+cd code;
 
-K = [615 0 320; 0 615 240; 0 0 1]';
-cameraParams = cameraParameters('IntrinsicMatrix', K);
+[fx, fy, cx, cy, G_camera_image, LUT]=ReadCameraModel(imgFolder,model);clc;
+K=[fx 0 cx;0 fy cy;0 0 1];
+
+% K = [615 0 320; 0 615 240; 0 0 1]';
+cameraParams = cameraParameters('IntrinsicMatrix', K');
+
 
 % Load ground truth camera poses.
 load(fullfile(toolboxdir('vision'), 'visiondata', ...
@@ -13,10 +20,9 @@ load(fullfile(toolboxdir('vision'), 'visiondata', ...
 vSet = viewSet;
 
 % Read and display the first image.
-Irgb = readimage(images, 1);
+Irgb = demosaic(readimage(images,1),'gbrg');
 player = vision.VideoPlayer('Position', [20, 400, 650, 510]);
 step(player, Irgb);
-
 
 prevI = undistortImage(rgb2gray(Irgb), cameraParams); 
 
@@ -35,7 +41,7 @@ vSet = addView(vSet, viewId, 'Points', prevPoints, 'Orientation', eye(3),...
 
 % Setup axes.
 figure
-axis([-220, 50, -140, 20, -50, 300]);
+axis([-50, 50, -140, 20, -10, 1000]);
 
 % Set Y-axis to be vertical pointing down.
 view(gca, 3);
@@ -70,7 +76,7 @@ title('Camera Trajectory');
 
 % Read and display the image.
 viewId = 2;
-Irgb = readimage(images, viewId);
+Irgb = demosaic(readimage(images,viewId),'gbrg');
 step(player, Irgb);
 
 % Convert to gray scale and undistort.
@@ -100,17 +106,19 @@ vSet = addConnection(vSet, viewId-1, viewId, 'Matches', indexPairs);
 % simulating an external sensor, which would be used in a typical monocular
 % visual odometry system.
 
-vSet = helperNormalizeViewSet(vSet, groundTruthPoses);
+% vSet = helperNormalizeViewSet(vSet, groundTruthPoses);
 
 %%
 % Update camera trajectory plots using 
 % <matlab:edit('helperUpdateCameraPlots.m') helperUpdateCameraPlots> and
 % <matlab:edit('helperUpdateCameraTrajectories.m') helperUpdateCameraTrajectories>.
 
-helperUpdateCameraPlots(viewId, camEstimated, camActual, poses(vSet), ...
-    groundTruthPoses);
-helperUpdateCameraTrajectories(viewId, trajectoryEstimated, trajectoryActual,...
-    poses(vSet), groundTruthPoses);
+% helperUpdateCameraPlots(viewId, camEstimated, camActual, poses(vSet), ...
+%     groundTruthPoses);
+helperUpdateCameraPlots(viewId, camEstimated, poses(vSet));
+% helperUpdateCameraTrajectories(viewId, trajectoryEstimated, trajectoryActual,...
+%     poses(vSet), groundTruthPoses);
+helperUpdateCameraTrajectories(viewId, trajectoryEstimated, poses(vSet));
 
 prevI = I;
 prevFeatures = currFeatures;
@@ -127,7 +135,7 @@ prevPoints   = currPoints;
 
 for viewId = 3:15
     % Read and display the next image
-    Irgb = readimage(images, viewId);
+    Irgb = demosaic(readimage(images,viewId),'gbrg');
     step(player, Irgb);
     
     % Convert to gray scale and undistort.
@@ -140,7 +148,9 @@ for viewId = 3:15
     % Eliminate outliers from feature matches.
     inlierIdx = helperFindEpipolarInliers(prevPoints(indexPairs(:,1)),...
         currPoints(indexPairs(:, 2)), cameraParams);
+    
     indexPairs = indexPairs(inlierIdx, :);
+
     
     % Triangulate points from the previous two views, and find the 
     % corresponding points in the current view.
@@ -187,10 +197,12 @@ for viewId = 3:15
     vSet = helperNormalizeViewSet(vSet, groundTruthPoses);
     
     % Update camera trajectory plot.
-    helperUpdateCameraPlots(viewId, camEstimated, camActual, poses(vSet), ...
-        groundTruthPoses);
-    helperUpdateCameraTrajectories(viewId, trajectoryEstimated, ...
-        trajectoryActual, poses(vSet), groundTruthPoses);
+% helperUpdateCameraPlots(viewId, camEstimated, camActual, poses(vSet), ...
+%     groundTruthPoses);
+helperUpdateCameraPlots(viewId, camEstimated, poses(vSet));
+% helperUpdateCameraTrajectories(viewId, trajectoryEstimated, trajectoryActual,...
+%     poses(vSet), groundTruthPoses);
+helperUpdateCameraTrajectories(viewId, trajectoryEstimated, poses(vSet));
     
     prevI = I;
     prevFeatures = currFeatures;
@@ -208,7 +220,7 @@ end
 
 for viewId = 16:numel(images.Files)
     % Read and display the next image
-    Irgb = readimage(images, viewId);
+    Irgb = demosaic(readimage(images,viewId),'gbrg');
     step(player, Irgb);
     
     % Convert to gray scale and undistort.
@@ -268,10 +280,12 @@ for viewId = 16:numel(images.Files)
     end
     
     % Update camera trajectory plot.
-    helperUpdateCameraPlots(viewId, camEstimated, camActual, poses(vSet), ...
-        groundTruthPoses);    
-    helperUpdateCameraTrajectories(viewId, trajectoryEstimated, ...
-        trajectoryActual, poses(vSet), groundTruthPoses);    
+% helperUpdateCameraPlots(viewId, camEstimated, camActual, poses(vSet), ...
+%     groundTruthPoses);
+helperUpdateCameraPlots(viewId, camEstimated, poses(vSet));
+% helperUpdateCameraTrajectories(viewId, trajectoryEstimated, trajectoryActual,...
+%     poses(vSet), groundTruthPoses);
+helperUpdateCameraTrajectories(viewId, trajectoryEstimated, poses(vSet));
     
     prevI = I;
     prevFeatures = currFeatures;
