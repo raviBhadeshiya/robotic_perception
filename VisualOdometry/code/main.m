@@ -9,11 +9,11 @@ cd code;
 [fx, fy, cx, cy, G_camera_image, LUT]=ReadCameraModel(imgFolder,model);clc;
 K=[fx 0 cx;0 fy cy;0 0 1];
 cameraParams = cameraParameters('IntrinsicMatrix', K');
-player = vision.VideoPlayer('Position', [20, 400, 650, 510]);
+% player = vision.VideoPlayer('Position', [20, 400, 650, 510]);
 %%
 image = demosaic(readimage(allImages,1),'gbrg');
 pImage = UndistortImage(image,LUT);
-step(player, pImage);
+% step(player, pImage);
 [pPoints , pFeature] = customFeature(pImage);
 estimatedView = viewSet;
 estimatedView = addView(estimatedView, 1, 'Points', pPoints, 'Orientation', eye(3),'Location', [0 0 0]);
@@ -21,7 +21,7 @@ estimatedView = addView(estimatedView, 1, 'Points', pPoints, 'Orientation', eye(
 image = demosaic(readimage(allImages,2),'gbrg');
 undistortedImg = UndistortImage(image,LUT);
 [points,feature,indexPairs] = customMatchFeature(undistortedImg,pFeature);
-step(player, undistortedImg);
+% step(player, undistortedImg);
 matchedPoints1 = pPoints(indexPairs(:,1));
 matchedPoints2 = points(indexPairs(:,2));
 
@@ -48,7 +48,7 @@ pPoints = points;
 pFeature = feature;
 %%
 figure
-axis([-220, 320, -140, 30, -50, 600]);
+axis([-220, 320, -140, 30, -50, 1000]);
 
 % Set Y-axis to be vertical pointing down.
 view(gca, 3);
@@ -72,18 +72,26 @@ start=3;
 for i = start:length(allImages.Files)
     image = demosaic(readimage(allImages,i),'gbrg');
     undistortedImg = UndistortImage(image,LUT);
-    step(player, undistortedImg);
+%     step(player, undistortedImg);
     [points,feature,indexPairs] = customMatchFeature(undistortedImg,pFeature);
     % Eliminate outliers from feature matches.
     inlierIdx = helperFindEpipolarInliers(pPoints(indexPairs(:,1)),...
         points(indexPairs(:, 2)), cameraParams);
+    
+%     [~,inlierIdx] = estimateFundamentalMatrix(pPoints(indexPairs(:,1)),points(indexPairs(:, 2)),...
+%         'Method','RANSAC','NumTrials',2000);
+    
     indexPairs = indexPairs(inlierIdx, :);
+    
     [worldPoints, imagePoints] = helperFind3Dto2DCorrespondences(estimatedView,...
         cameraParams, indexPairs, points);
+    
     warningstate = warning('off','vision:ransac:maxTrialsReached');
     % Estimate the world camera pose for the current view.
     [orient, loc] = estimateWorldCameraPose(imagePoints, worldPoints, ...
-        cameraParams, 'Confidence', 99.99, 'MaxReprojectionError', 0.8);
+        cameraParams, 'MaxNumTrials', 5000, 'Confidence', 99.99, ...
+        'MaxReprojectionError', 0.8);
+    
     % Restore the original warning state
     warning(warningstate)
     % Add the current view to the view set.
@@ -91,19 +99,26 @@ for i = start:length(allImages.Files)
         'Location', loc);
     % Store the point matches between the previous and the current views.
     estimatedView = addConnection(estimatedView, i-1, i, 'Matches', indexPairs);    
- if (mod(i,5) == 0)
-    tracks = findTracks(estimatedView); % Find point tracks spanning multiple views.
+ if (mod(i,7) == 0)
+        windowSize = 15;
+        startFrame = max(1, i - windowSize);
+        tracks = findTracks(estimatedView, startFrame:i);
+        camPoses = poses(estimatedView, startFrame:i);
+        [xyzPoints, reprojErrors] = triangulateMultiview(tracks, camPoses, ...
+            cameraParams);
+                                
+        % Hold the first two poses fixed, to keep the same scale. 
+        fixedIds = [startFrame, startFrame+1];
         
-    camPoses = poses(estimatedView);    % Get camera poses for all views.
-    
-    xyzPoints = triangulateMultiview(tracks, camPoses, cameraParams);
-    
-    % Refine camera poses using bundle adjustment.
-    [~, camPoses] = bundleAdjustment(xyzPoints, tracks, camPoses, ...
-        cameraParams, 'PointsUndistorted', true, 'AbsoluteTolerance', 1e-9,...
-        'RelativeTolerance', 1e-9, 'MaxIterations', 400);
+        % Exclude points and tracks with high reprojection errors.
+        idx = reprojErrors < 2;
         
-    estimatedView = updateView(estimatedView, camPoses); % Update view set.
+        [~, camPoses] = bundleAdjustment(xyzPoints(idx, :), tracks(idx), ...
+            camPoses, cameraParams, 'FixedViewIDs', fixedIds, ...
+            'PointsUndistorted', true, 'AbsoluteTolerance', 1e-9,...
+            'RelativeTolerance', 1e-9, 'MaxIterations', 300);
+        
+        estimatedView = updateView(estimatedView, camPoses);
  end
     updateCamera(i,trajectoryEstimated,camEstimated,poses(estimatedView));    
     pImage = undistortedImg;
