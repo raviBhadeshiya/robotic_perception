@@ -1,5 +1,5 @@
 function [C R] = LinearPnP(X, x, K)
-
+% 
 x = inv(K) * [x';ones(1,size(x,1))];
 x = x';
 A = [];
@@ -22,3 +22,4 @@ if det(R) < 0
     t = -t;
 end
 C = -R'*t;
+wnd
