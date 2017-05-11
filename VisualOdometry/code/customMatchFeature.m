@@ -1,7 +1,11 @@
-function [points , feature,idxPair]=customMatchFeature(image,pFeature)
+function [points , feature,idxPair, vPoints]=customMatchFeature(image,pFeature,pImage,pvPoints)
 if size(image,3) == 3
 image=rgb2gray(image);
 end
-[points , feature]=customFeature(image);
+[points , feature, vPoints]=customFeature(image);
 idxPair = matchFeatures(pFeature, feature, 'Unique', true);
+matchedPoints1 = pvPoints(idxPair(:, 1));
+matchedPoints2 = vPoints(idxPair(:, 2));
+% figure(2);
+% showMatchedFeatures(pImage,image,matchedPoints1,matchedPoints2);
 end

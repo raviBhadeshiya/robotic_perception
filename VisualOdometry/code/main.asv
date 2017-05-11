@@ -19,7 +19,7 @@ estimatedView = viewSet;
 estimatedView = addView(estimatedView, 1, 'Points', pPoints, 'Orientation',...
     eye(3),'Location', [0 0 0]);
 
-image = demosaic(readimage(allImages, 2),'gbrg');
+image = demosaic(readimage(allImages,2),'gbrg');
 undistortedImg = UndistortImage(image,LUT);
 [points,feature,indexPairs,vPoints] = customMatchFeature(undistortedImg,pFeature,pImage,pvPoints);
 step(player, undistortedImg);
@@ -110,7 +110,7 @@ for i = start:length(allImages.Files)
     end
     [C,R,~] = DisambiguateCameraPose(Cset, Rset, Xset);
     
-    C = abs(C) + estimatedView.Views.Location{i-1}';
+    C = abs(C) + estimatedView.Views.Location{i-1}'
     R = R * estimatedView.Views.Orientation{i-1};
     
     estimatedView = addView(estimatedView, i, 'Points', points,...
@@ -124,28 +124,27 @@ for i = start:length(allImages.Files)
 %         'Location', loc);
 %     % Store the point matches between the previous and the current views.
 %     estimatedView = addConnection(estimatedView, i-1, i, 'Matches', indexPairs);
-%     if (mod(i,1) == 0)
-%         windowSize = 2;
-%         startFrame = max(1, i - windowSize);
-%         tracks = findTracks(estimatedView, startFrame:i);
-%         camPoses = poses(estimatedView, startFrame:i);
-%         [xyzPoints, reprojErrors] = triangulateMultiview(tracks, camPoses, ...
-%             cameraParams);
-%         
-%         % Hold the first two poses fixed, to keep the same scale.
-%         fixedIds = [startFrame, startFrame+1];
-%         
-%         % Exclude points and tracks with high reprojection errors.
-%         idx = reprojErrors < 10;
-%         
-%         [~, camPoses] = bundleAdjustment(xyzPoints(idx, :), tracks(idx), ...
-%             camPoses, cameraParams, 'FixedViewIDs', fixedIds, ...
-%             'PointsUndistorted', true, 'AbsoluteTolerance', 1e-9,...
-%             'RelativeTolerance', 1e-9, 'MaxIterations', 300);
-%         
-%         estimatedView = updateView(estimatedView, camPoses);
-%     end
-
+    if (mod(i,1) == 0)
+        windowSize = 2;
+        startFrame = max(1, i - windowSize);
+        tracks = findTracks(estimatedView, startFrame:i);
+        camPoses = poses(estimatedView, startFrame:i);
+        [xyzPoints, reprojErrors] = triangulateMultiview(tracks, camPoses, ...
+            cameraParams);
+        
+        % Hold the first two poses fixed, to keep the same scale.
+        fixedIds = [startFrame, startFrame+1];
+        
+        % Exclude points and tracks with high reprojection errors.
+        idx = reprojErrors < 2;
+        
+        [~, camPoses] = bundleAdjustment(xyzPoints(idx, :), tracks(idx), ...
+            camPoses, cameraParams, 'FixedViewIDs', fixedIds, ...
+            'PointsUndistorted', true, 'AbsoluteTolerance', 1e-9,...
+            'RelativeTolerance', 1e-9, 'MaxIterations', 300);
+        
+        estimatedView = updateView(estimatedView, camPoses);
+    end
     updateCamera(i,trajectoryEstimated,camEstimated,poses(estimatedView));
     pImage = undistortedImg;
     pPoints = points;

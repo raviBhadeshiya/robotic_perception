@@ -4,5 +4,5 @@ E=K'*F*K;
 i=eye(3);
 i(3,3)=0;
 E=u*i*v';
-E=E/norm(E);
+% E=E/norm(E);
 end
