@@ -51,9 +51,9 @@ pPoints = points;
 pFeature = feature;
 pvPoints = vPoints;
 %%
-% axis([-20, 1000, -140, 30, 0, 2000]);
 figure
-axis([-1000, 20, -30, 140, -2000, 0]);
+axis([-20, 1000, -140, 30, 0, 2000]);
+
 % Set Y-axis to be vertical pointing down.
 view(gca, 3);
 set(gca, 'CameraUpVector', [0, -1, 0]);
@@ -117,13 +117,13 @@ for i = start:length(allImages.Files)
     
 %     C = C + estimatedView.Views.Location{i-1}';
 %     R = R * estimatedView.Views.Orientation{i-1};
-    cT = cT'*estimatedView.Views.Orientation{i-1} + estimatedView.Views.Location{i-1};
+    cT = cT + estimatedView.Views.Location{i-1}';
     cRot = cRot * estimatedView.Views.Orientation{i-1};
 %     
 %     estimatedView = addView(estimatedView, i, 'Points', points,...
 %     'Orientation', R,'Location', C);
     estimatedView = addView(estimatedView, i, 'Points', points,...
-    'Orientation', cRot,'Location', cT);
+    'Orientation', cRot,'Location', cT');
     estimatedView = addConnection(estimatedView, i-1, i, 'Matches', indexPairs);
 %     
 %     % Restore the original warning state
@@ -168,7 +168,7 @@ load gong.mat;
 sound(y);
 
 figure
-axis([-1000, 20, -30, 400, -2000, 0]);
+axis([-1000, 20, -30, 140, -2000, 0]);
 % Set Y-axis to be vertical pointing down.
 view(gca, 3);
 set(gca, 'CameraUpVector', [0, -1, 0]);
