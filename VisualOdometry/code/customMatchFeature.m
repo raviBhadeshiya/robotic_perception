@@ -6,6 +6,4 @@ end
 idxPair = matchFeatures(pFeature, feature, 'Unique', true);
 matchedPoints1 = pvPoints(idxPair(:, 1));
 matchedPoints2 = vPoints(idxPair(:, 2));
-% figure(2);
-% showMatchedFeatures(pImage,image,matchedPoints1,matchedPoints2);
 end

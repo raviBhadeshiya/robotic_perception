@@ -43,15 +43,15 @@ for i=1:4
     depth(i,2) = sum(sign(DepthOfPoints(x3D(:,:,i),rot(:,:,i),t(:,:,i)))); % using the recovered camera
 end
 
-if(depth(1,1)>0 && depth(1,2)>0)
+if(depth(1,1)<0 && depth(1,2)<0)
     correct = 1;
-elseif(depth(2,1)>0 && depth(2,2)>0)
+elseif(depth(2,1)<0 && depth(2,2)<0)
     correct = 2;
-elseif(depth(3,1)>0 && depth(3,2)>0)
+elseif(depth(3,1)<0 && depth(3,2)<0)
     correct = 3;
-elseif(depth(4,1)>0 && depth(4,2)>0)
+elseif(depth(4,1)<0 && depth(4,2)<0)
     correct = 4;
-end;
+end
 %correct 
 
 % return the selected solution
