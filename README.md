@@ -1,6 +1,6 @@
 # Robotic Perception
 
-This repository is the showcase of the projects done in the course *ENPM673* at University of Maryland. This course is specifically designed to give insights to *Robotic perception* and includes topics from the very basics like various image transformations to stat-of-the-art algorithms like monocular visual odometry. In this section, brief descriptions are provided about every project done under this course. The projects done in this course are listed below, please click on the link to reach a particular section:
+This repository is a showcase of the projects done in the course *ENPM673* at University of Maryland. This course is specifically designed to give insights to *Robotic perception* and includes topics from the very basics like various image transformations to state-of-the-art algorithms like monocular visual odometry. In this section, brief descriptions are provided about every project done under this course. The projects done in this course are listed below, please click on the link to reach a particular section:
   
   * [Augmented Reality](https://github.com/raviBhadeshiya/robotic_perception#augmented-reality)
   * [Buoy Detection](https://github.com/raviBhadeshiya/robotic_perception#buoy-detection)
@@ -61,7 +61,7 @@ Moving one more step ahead towards achieving the goal of completing covering up 
 
 ### Visual Odometry
 
-This is the final project in the course and very crucial task for driverless cars. It is one of the state-of-the-art algorithms used currently in many robotics projects. Visual odometry obtains the information of the location of the vehicle from the video stream obtained from the RGBD camera. Taking it one step ahead, in this project visual odometry is computed from *monocular* camera without any depth information obtained directly from the camera. The position of the camera is tracked across the frames by computing *Essential matrices*, obtaining *rotation* and *translation* matrices from it, and selecting correct Essential matrix by doing *triangulation*. The *trajectory* of the vehicle calculated for the given video is shown below.
+This is the final project in the course and very crucial task for driverless cars. It is one of the cutting edges algorithms used currently in many robotics projects. Visual odometry obtains the information of the location of the vehicle from the video stream obtained from the RGBD camera. Taking it one step ahead, in this project visual odometry is computed from *monocular* camera without any depth information obtained directly from the camera. The position of the camera is tracked across the frames by computing *Essential matrices*, obtaining *rotation* and *translation* matrices from it, and selecting correct Essential matrix by doing *triangulation*. The *trajectory* of the vehicle calculated for the given video is shown below.
 
 <p align="center">
 <img src="https://github.com/raviBhadeshiya/robotic_perception/blob/master/Visual_odometry/output/trajectory1.jpg">
