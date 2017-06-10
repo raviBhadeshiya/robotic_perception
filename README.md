@@ -61,7 +61,7 @@ Moving one more step ahead towards achieving the goal of completing covering up 
 
 ### Visual Odometry
 
-This is the final project in the course and very crucial task for driverless cars. It is one of the cutting edges algorithms used currently in many robotics projects. Visual odometry obtains the information of the location of the vehicle from the video stream obtained from the RGBD camera. Taking it one step ahead, in this project visual odometry is computed from *monocular* camera without any depth information obtained directly from the camera. The position of the camera is tracked across the frames by computing *Essential matrices*, obtaining *rotation* and *translation* matrices from it, and selecting correct Essential matrix by doing *triangulation*. The *trajectory* of the vehicle calculated for the given video is shown below.
+This is the final project in the course and very crucial task for driverless cars. It is one of the cutting edge algorithms used currently in many robotics' projects. Visual odometry obtains the information of the location of the vehicle from the video stream obtained from the RGBD camera. Taking it one step ahead, in this project visual odometry is computed from *monocular* camera without any depth information obtained directly from the camera. The position of the camera is tracked across the frames by computing *Essential matrices*, obtaining *rotation* and *translation* matrices from it, and selecting correct Essential matrix by doing *triangulation*. The *trajectory* of the vehicle calculated for the given video is shown below.
 
 <p align="center">
 <img src="https://github.com/raviBhadeshiya/robotic_perception/blob/master/Visual_odometry/output/trajectory1.jpg">
