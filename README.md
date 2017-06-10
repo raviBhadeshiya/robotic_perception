@@ -1,6 +1,13 @@
 # Robotic Perception
 
-This repository is the showcase of the projects done in the course *ENPM673* at University of Maryland. This course is specifically designed to give insights to *Robotic perception* and includes topics from the very basics like various image transformations to stat-of-the-art algorithms like monocular visual odometry. Below are the brief descriptions of the various projects done. You can visit the particular folder to get more detailed description about the project.
+This repository is the showcase of the projects done in the course *ENPM673* at University of Maryland. This course is specifically designed to give insights to *Robotic perception* and includes topics from the very basics like various image transformations to stat-of-the-art algorithms like monocular visual odometry. In this section, brief descriptions are provided about every project done under this course. The projects done in this course are listed below, please click on the link to reach a particular section:
+  
+  * [Augmented Reality](https://github.com/raviBhadeshiya/robotic_perception#augmented-reality)
+  * [Buoy Detection](https://github.com/raviBhadeshiya/robotic_perception#buoy-detection)
+  * [Lane Detection](https://github.com/raviBhadeshiya/robotic_perception#lane-detection)
+  * [Traffic Sign Recognition](https://github.com/raviBhadeshiya/robotic_perception#traffic-sign-recognition)
+  * [Car Detection](https://github.com/raviBhadeshiya/robotic_perception#car-tracking)
+  * [Visual Odometry](https://github.com/raviBhadeshiya/robotic_perception#visual-odometry)
 
 ### Augmented Reality
 
