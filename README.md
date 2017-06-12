@@ -9,6 +9,8 @@ This repository is a showcase of the projects done in the course *ENPM673* at Un
   * [Car Detection](https://github.com/raviBhadeshiya/robotic_perception#car-tracking)
   * [Visual Odometry](https://github.com/raviBhadeshiya/robotic_perception#visual-odometry)
 
+Please note that all the codes have been tested and ran on MATLAB 2016b and MATLAB 2017a. Also note that for *Visual Odometery* project you will need Computer Vision toolbox of MATLAB by Mathworks Inc. It can be found [here](https://www.mathworks.com/products/computer-vision/apps.html).
+
 ### Augmented Reality
 
 This is one of the projects which uses the very basic concepts like image transformations and homography to generate very powerful results like augmented reality. In this project, the task was to generate a cube on an Apriltag in the frame. This task can be broken down into different parts to simplify it and then integrate them to generate the expected results. A sample output can be seen below. The project was broken down into following parts:
@@ -53,7 +55,7 @@ For detection of traffic signs, simple color segmentation technique is used in H
 
 ### Car Tracking
 
-Moving one more step ahead towards achieving the goal of completing covering up algorithms used in autonomous cars, the task in this project is to detect the car in traffic and keep a track of them in the video stream. To detect the car in the frame, *Cascade* classifiers are used. It offeres reliable results after tuning of certain paramters of the detector with very less amount of computations. Once a car is found in the frame, *Speeded Up Robust Features* are identifed in the detected car. These features are then used to track the car across the frames using *Kanade-Lucas-Tomasi* point tracking algorithm. A sample extract of the output video is shown below. 
+Moving one more step ahead towards achieving the goal of covering up algorithms used in autonomous cars, the task in this project is to detect the car in traffic and keep a track of them in the video stream. To detect the car in the frame, *Cascade* classifiers are used. It offeres reliable results after tuning certain paramters of the detector with very less amount of computations. Once a car is found in the frame, *Speeded Up Robust Features* are identifed in the detected car. These features are then used to track the car across the frames using *Kanade-Lucas-Tomasi* point tracking algorithm. A sample extract of the output video is shown below. 
 
 <p align="center">
 <img src="https://github.com/raviBhadeshiya/robotic_perception/blob/master/_output/car_tracking.gif">
